@@ -26,6 +26,9 @@ exploze = mixer.Sound('sokrushitelnyiy-sotryasayuschiy-oglushayuschiy-vzryiv.ogg
 # шрифти і написи⬅️
 font.init()
 font2 = font.Font(None, 36)
+font1 = font.Font(None, 80)
+win = font1.render('You are survived!!', True, (255, 255, 255))
+lose = font1.render('you were blown up by an enemy ship!', True, (180, 0, 0))
 
 score = 0  # збито кораблів
 lost = 0  # пропущено кораблів
@@ -124,6 +127,18 @@ while run:
 
         bullets.update()
         bullets.draw(window)
+
+        collides = sprite.groupcollide(monsters, bullets, True, True)
+        for c in collides:
+            score = score + 1
+            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 5))
+            monsters.add(monster)
+
+        if sprite.spritecollide(ship, monsters, False) or lost >= max_lost:
+            finish = True
+            window.blit(lose, ( 200, 200))
+
+
 
         display.update()
     # цикл спрацьовує кожні 0.05 секунд
